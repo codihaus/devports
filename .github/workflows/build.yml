@@ -1,0 +1,28 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: swift build -c release
+
+      - name: Bundle .app
+        run: make bundle
+
+      - name: Show app size
+        run: du -sh DevPorts.app
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DevPorts.app
+          path: DevPorts.app

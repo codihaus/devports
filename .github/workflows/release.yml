@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: macos-14
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build release
+        run: make bundle
+
+      - name: Zip app
+        run: ditto -c -k --sequesterRsrc DevPorts.app DevPorts.app.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: DevPorts.app.zip
+          generate_release_notes: true
