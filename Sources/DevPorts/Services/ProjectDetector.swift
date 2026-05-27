@@ -1,7 +1,7 @@
 import Foundation
 
 enum ProjectDetector {
-    private static var cache: [Int32: (name: String, timestamp: Date)] = [:]
+    nonisolated(unsafe) private static var cache: [Int32: (name: String, timestamp: Date)] = [:]
     private static let cacheTTL: TimeInterval = 30
 
     static func projectName(for pid: Int32, at cwd: String) -> String {

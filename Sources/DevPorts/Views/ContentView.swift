@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct ContentView: View {
     @Bindable var monitor: ProcessMonitor
     @State private var showSettings = false

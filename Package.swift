@@ -7,7 +7,8 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "DevPorts",
-            path: "Sources/DevPorts"
+            path: "Sources/DevPorts",
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency")]
         )
     ]
 )
