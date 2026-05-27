@@ -25,9 +25,10 @@ final class ProcessMonitor {
         scanAsync()
         backgroundTimer?.invalidate()
         backgroundTimer = Timer.scheduledTimer(withTimeInterval: backgroundInterval, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                guard self?.isAutoRefreshActive != true else { return }
-                self?.scanAsync()
+            guard let self else { return }
+            Task { @MainActor [weak self] in
+                guard let self, !self.isAutoRefreshActive else { return }
+                self.scanAsync()
             }
         }
     }
@@ -103,7 +104,8 @@ final class ProcessMonitor {
     private func scheduleForegroundTimer() {
         foregroundTimer?.invalidate()
         foregroundTimer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
-            Task { @MainActor in
+            guard let self else { return }
+            Task { @MainActor [weak self] in
                 self?.scanAsync()
             }
         }

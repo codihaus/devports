@@ -134,7 +134,8 @@ struct ProcessRowView: View {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString("http://localhost:\(port)", forType: .string)
         copiedPort = port
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(1.5))
             if copiedPort == port { copiedPort = nil }
         }
     }
