@@ -4,7 +4,7 @@ Tiny macOS menu bar app for instantly seeing all local development servers and p
 
 No more `lsof -iTCP -sTCP:LISTEN | grep node` and `kill -9 PID`. Just click the menu bar icon.
 
-<!-- TODO: add demo GIF here -->
+![DevPorts Screenshot](screenshot.png)
 
 ## Install
 
