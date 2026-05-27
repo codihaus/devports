@@ -6,14 +6,34 @@ No more `lsof -iTCP -sTCP:LISTEN | grep node` and `kill -9 PID`. Just click the 
 
 <!-- TODO: add demo GIF here -->
 
+## Install
+
+### Homebrew (recommended)
+
+```bash
+brew install --cask codihaus/tap/devports
+```
+
+### Quick install (curl)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/codihaus/devports/main/install.sh | bash
+```
+
+### Download
+
+Grab the latest `.app.zip` from [Releases](https://github.com/codihaus/devports/releases), unzip, drag to Applications.
+
+> First launch: macOS may block unsigned apps. Right-click the app → Open to bypass.
+
 ## Features
 
 - **Project name detection** — reads `package.json`, `pyproject.toml`, `go.mod`, `composer.json`, or falls back to folder name
 - **Framework detection** — Vite, Next.js, Nuxt, Webpack, Remix, Astro, Bun, Deno, Ollama, Python, Go, Ruby, PHP, Java
 - **Click port to copy** — click `:3000` badge to copy `http://localhost:3000` to clipboard
 - **Copy all URLs** — one click to copy every localhost URL
-- **1-click actions** — Kill process (with confirmation), Open in Terminal, Open in Chrome
-- **Auto-refresh** — configurable interval (2s/5s/10s/30s), only polls when popup is open
+- **1-click actions** — Kill (with confirmation), Open Terminal, Open in Chrome
+- **Auto-refresh** — configurable (2s / 5s / 10s / 30s), only polls when popup is open
 - **Background badge** — process count always up-to-date on menu bar
 - **Launch at login** — LaunchAgent support
 
@@ -25,39 +45,29 @@ No dashboards. No process managers. No Electron. No analytics.
 
 Just instant visibility into your local dev servers. Install it, forget it, click when you need it.
 
-## Install
-
-```bash
-# Build and install to /Applications
-make install
-
-# Auto-start on login
-make launchagent
-```
-
-## Development
+## Build from Source
 
 ```bash
 # Requirements: macOS 14+, Swift 5.9+, Xcode CLI tools
 xcode-select --install
 
-# Run in dev mode
-make run
+# Build + install to /Applications
+make install
 
-# Build release .app bundle (424KB)
-make bundle
+# Auto-start on login
+make launchagent
+
+# Dev mode
+make run
 
 # Clean
 make clean
-
-# Remove auto-start
-make uninstall-launchagent
 ```
 
 ## Tech
 
 - Pure **SwiftUI + AppKit** — no Electron, no Tauri, no dependencies
-- **424KB** binary, near-zero memory footprint
+- **~500KB** binary, near-zero memory footprint
 - Process detection via `lsof` + Darwin native APIs (`proc_pidinfo`, `proc_pidpath`)
 - Framework classification via command-line argument pattern matching
 - In-memory project name cache (30s TTL)

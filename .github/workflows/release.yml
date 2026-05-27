@@ -18,8 +18,33 @@ jobs:
       - name: Zip app
         run: ditto -c -k --sequesterRsrc DevPorts.app DevPorts.app.zip
 
+      - name: Get version
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Get SHA256
+        id: sha
+        run: echo "sha256=$(shasum -a 256 DevPorts.app.zip | awk '{print $1}')" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: DevPorts.app.zip
           generate_release_notes: true
+
+      - name: Update Cask formula
+        run: |
+          sed -e "s/__VERSION__/${{ steps.version.outputs.version }}/" \
+              -e "s/__SHA256__/${{ steps.sha.outputs.sha256 }}/" \
+              Cask/devports.rb > devports-cask.rb
+          echo "## Homebrew Cask" >> $GITHUB_STEP_SUMMARY
+          echo '```ruby' >> $GITHUB_STEP_SUMMARY
+          cat devports-cask.rb >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Install:** \`brew install --cask codihaus/tap/devports\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Cask formula
+        uses: softprops/action-gh-release@v2
+        with:
+          files: devports-cask.rb
