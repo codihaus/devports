@@ -92,7 +92,7 @@ struct ContentView: View {
                 }
                 .padding(.vertical, 4)
             }
-            .frame(maxHeight: 400)
+            .frame(maxHeight: NSScreen.main.map { $0.visibleFrame.height * 0.8 } ?? 600)
         }
     }
 
