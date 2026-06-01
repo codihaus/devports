@@ -75,7 +75,7 @@ struct ContentView: View {
             EmptyStateView()
         } else {
             ScrollView {
-                LazyVStack(spacing: 0) {
+                VStack(spacing: 0) {
                     ForEach(monitor.processes) { process in
                         ProcessRowView(
                             process: process,
