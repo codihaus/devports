@@ -21,6 +21,10 @@ final class ProcessMonitor {
 
     var processCount: Int { processes.count }
 
+    init() {
+        startBackgroundRefresh()
+    }
+
     func startBackgroundRefresh() {
         scanAsync()
         backgroundTimer?.invalidate()

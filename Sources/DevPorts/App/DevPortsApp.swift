@@ -8,7 +8,6 @@ struct DevPortsApp: App {
     var body: some Scene {
         MenuBarExtra {
             ContentView(monitor: monitor)
-                .onAppear { monitor.startBackgroundRefresh() }
         } label: {
             HStack(spacing: 4) {
                 Image(systemName: "network")

@@ -69,30 +69,31 @@ struct ContentView: View {
         .padding(.vertical, 10)
     }
 
+    private var sortedProcesses: [DevProcess] {
+        monitor.processes.sorted { $0.projectName.localizedCaseInsensitiveCompare($1.projectName) == .orderedAscending }
+    }
+
     @ViewBuilder
     private var content: some View {
         if monitor.processes.isEmpty && !monitor.isScanning {
             EmptyStateView()
         } else {
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(monitor.processes) { process in
-                        ProcessRowView(
-                            process: process,
-                            onKill: { _ = monitor.killProcess(process) },
-                            onTerminal: { monitor.openTerminal(for: process) },
-                            onBrowser: { monitor.openInBrowser(process) }
-                        )
-                        .padding(.horizontal, 16)
+            VStack(spacing: 0) {
+                ForEach(sortedProcesses) { process in
+                    ProcessRowView(
+                        process: process,
+                        onKill: { _ = monitor.killProcess(process) },
+                        onTerminal: { monitor.openTerminal(for: process) },
+                        onBrowser: { monitor.openInBrowser(process) }
+                    )
+                    .padding(.horizontal, 16)
 
-                        if process.id != monitor.processes.last?.id {
-                            Divider().padding(.leading, 52)
-                        }
+                    if process.id != sortedProcesses.last?.id {
+                        Divider().padding(.leading, 52)
                     }
                 }
-                .padding(.vertical, 4)
             }
-            .frame(maxHeight: NSScreen.main.map { $0.visibleFrame.height * 0.8 } ?? 600)
+            .padding(.vertical, 4)
         }
     }
 
